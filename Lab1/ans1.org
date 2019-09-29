@@ -29,21 +29,7 @@ tr (1p): translates characters
 
 tr (1): translates or deletes characters
 
-The shell command I ran were:
-
-cd /usr/bin
-
-find -name "?r"
-
-cd /usr/local/cs/bin
-
-find -name "?r"
-
-whatis ar
-
-whatis pr
-
-whatis tr
+The shell command I used were: ~cd~, ~find~ and ~whatis~
 
 ** Question 4
 Executing 'emacs' in the terminal actually executes /usr/local/cs/bin/emacs since this path was prepended to the PATH variable.
