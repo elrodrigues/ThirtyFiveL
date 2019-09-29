@@ -1,0 +1,116 @@
+* Linux and Emacs Scavenger Hunt
+I ran the command `export PATH=/usr/local/cs/bin:$PATH` as it wasn't prepended by default.
+Most of my discovery was from reviewing slides and rummaging through man pages of commands from slides: particularly, the find wildcards and flags.
+I have a description of my session at the end of this file.
+
+** Question 1 
+The shell command 'whatis' uses man to print a list of commands with keyword matches in their man pages.
+
+** Question 2
+The actual programs of 'mv' and 'sh' are stored in directory /usr/bin; the command also outputted locations of their tar files.
+The shell commands used are:
+whereis mv
+whereis sh
+
+** Question 3
+I found the commands 'ar', 'pr', and 'tr'. They each had two versions (1) and (1p).
+ar (1p): creates and maintains library archives
+ar (1): creates, modifies, and extracts from archives
+pr (1p): prints files
+pr (1): converts text files for printing
+tr (1p): translates characters
+tr (1): translates or deletes characters
+The shell command I ran were:
+cd /usr/bin
+find -name "?r"
+cd /usr/local/cs/bin
+find -name "?r"
+whatis ar
+whatis pr
+whatis tr
+
+** Question 4
+Executing 'emacs' in the terminal actually executes /usr/local/cs/bin/emacs since this path was prepended to the PATH variable.
+The shell command used was: which emacs
+
+** Question 5
+Running `gcc --version` outputs version 9.2.0, and running `/usr/bin/gcc --version` outputs version 4.8.5.
+There are atleast two different 'gcc' executables, but the one in /usr/local/cs/bin is called first when we run plain gcc since it is the first path in the variable PATH.
+
+** Question 6
+The symbolic mode `u+sx` makes the file executable and allows any user executing the file to run it with the same privileges as the file's owner.
+The symbolic mode `o-w` removes write permission for users who are neither the owner nor a member of the file's group.
+
+** Question 7
+My discovery process here involved scouring 'find' man pages for any reference of 'time'. I first tried the flags -ctime, then -atime and finally -mtime.
+After running the command 'man find | grep "time"', I found a description for -mtime which stated that its parameter n is multiplied with 24 hours.
+
+The command I ran were:
+cd /usr/local/cs
+find -type d -mtime -28
+
+The man page explained that '-n' means less than n. I found that some files in the directories /src, /bison-3.4.2, /gdb-8.3.1 and /ocaml-4.09.0 were modified within four weeks.
+
+** Question 8
+There are 303 symbolic links in /usr/bin where `find` is located. I first tried running 'find -type l -maxdepth 1' and was warned not to do this.
+I ran the following commands (and found their flags through their respective man pages):
+
+which find
+cd /usr/bin
+find -maxdepth 1 -type l | wc -l
+The last command takes 'find' output and feeds it into 'wc' that counts the lines with -l.
+
+** Question 9
+The absolute oldest regular file in /usr/lib64 (with no depth restriction) is /tcl8.5/Tix8.4.3/bitmaps/textfile.gif
+The oldest regular file strictly in /usr/lib64 (so no subdirectories) is librom1394.so.0.3.0
+
+The shell commands I used were 'cd', 'find' and 'ls'. The commands I used to find the above files respectively are:
+find -type f -mtime +2099 -exec ls -lht {} \+
+find -maxdepth 1 -type f -mtime +2099 -exec ls -lht {} \+
+
+I found the -exec flag and -t for ls through their man pages.
+
+** Question 10
+The 'locale' command gets its information from the directory /usr/share/i18n/locales. I used the shell commands 'man', 'cd' and 'ls'.
+
+** Question 11
+'downcase-dwim', 'downcase-region', 'downcase-word' have downcase in their names.
+I used the Emacs command C-h (apropos-command)
+
+** Question 12
+The Emacs keystroke C-M-r does an incremental search backward for regular expression.
+The Emacs keystroke C-M-v scrolls upwards to the next window by ARG lines, or the 'next full screen' if ARG is empty. It scrolls downwards if ARG is negative
+I used the Emacs command C-h k (describe-key)
+
+** Question 13
+The Emacs keystroke C-g is bound to the command keyboard-quit. It allows the user to "get rid of a partially typed command or numeric argument" and
+stop a running command "in a relatively safe way". It may take 2 C-g's to get out of an incremental search.
+
+I fetched this documentation using the keystroke C-h K (Info-goto-emacs-key-command-node)
+
+** Question 14
+The yank command reinserts/pastes the "most recent stretch of killed text." Its keystroke bind is C-y.
+
+The Emacs command C-h f (describe-function)
+
+** Question 15
+I used C-h f (describe-function) to find the keybinds for dired which was C-x d. Some differences I found were:
+
+(1) Emacs' dired shows hidden files and directories while ls -l does not. This can be seen in the '.' and '..' directory.
+    Also, the total files displayed in Emacs is 350336, while ls -l shows 350248. Running ls -al shows the missing 88 files.
+
+(2) On my shell, I see that ls -l has 'color-coded' its list, while Emacs' dired doesn't.
+
+The shell commands I used are 'cd', 'ls -l' and 'head'.
+
+** Description of my Discovery Session
+Before starting the lab, I looked at the user manual for Org files as I was curious about its formatting advantages.
+
+As stated above, I heavily used the man pages of the relevant command in each question. I first had a hard time navigating the pages,
+but then I remembered a tool called 'grep' from a previous project that would help me search for keywords. For example, in question 7, 
+I needed flags for modified time so I ran the command ~man find | grep "time"~ and found the flag '-mtime'.
+
+I had a harder time with Emacs. One difficulty I encountered immediately was finding and using Emacs'help command and documentation. 
+I accidently encountered options for C-h by typing 'C-h C-h'. After discovering this, the latter half of the lab was relatively easy. 
+I also had trouble inputting Ctrl and Meta together (probably since I'm on Windows), but after consulting the linked Emacs tutorial, 
+I figured out a way to do this. For example, to type C-M-v, I would have to type <ESC> C-v.
