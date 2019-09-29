@@ -1,2 +1,2 @@
 # 35L
-Repository for CS35L, Fall 2019
+Repository for CS 35L, Fall 2019
