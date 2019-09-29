@@ -65,8 +65,8 @@ The absolute oldest regular file in /usr/lib64 (with no depth restriction) is /t
 The oldest regular file strictly in /usr/lib64 (so no subdirectories) is librom1394.so.0.3.0
 
 The shell commands I used were 'cd', 'find' and 'ls'. The commands I used to find the above files respectively are:
-find -type f -mtime \+2099 -exec ls -lht {} \+
-find -maxdepth 1 -type f -mtime \+2099 -exec ls -lht {} \+
+~find -type f -mtime +2099 -exec ls -lht {} \+~
+~find -maxdepth 1 -type f -mtime +2099 -exec ls -lht {} \+~
 
 I found the -exec flag and -t for ls through their man pages.
 
