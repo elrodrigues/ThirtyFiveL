@@ -15,9 +15,9 @@ Homework 1: Recorded Keystrokes
 
 7. C-a 
 
-8. One could use C-a to go a line's beginning and C-e to go a line's end.
+8. One could use C-a to go a line's beginning and C-e to go a line's end. 
 
-9. I did not use arrow keys to move the cursor. I have used keybindings above.
+9. I did not use arrow keys to move the cursor. I have used keybindings above. 
    Instead of arrow keys, we could use C-b and C-f to move left and right, and C-p and C-n for up and down.
 
 10. C-x C-c
@@ -53,15 +53,24 @@ Homework 1: Recorded Keystrokes
 
 3. M-> C-p C-p C-f C-k C-y M-g g 4 3 2 Enter C-y 
 
-4. M-> C-r < ! C-r C-SP C-n C-n C-n C-e C-x r s a 
+4. M-> C-r < ! C-r C-SP C-n C-n C-n C-e C-x r s a
+
 C-r < ! C-r C-SP C-f C-e C-b C-b C-b C-b C-b C-x r s b 
+
 C-r < ! C-r C-SP C-n C-n C-e C-x r s c 
+
 C-r < ! C-r C-SP C-e C-x r s d 
+
 C-r < ! C-r C-SP C-e C-x r s e 
+
 C-r < / p C-n C-x r i a C-n C-d C-n C-d C-n C-d 
+
 C-r s h M-f M-f M-f C-x r i b 
+
 C-r < / h C-n C-n C-x r i c C-n C-d C-n C-d 
+
 C-r < / h 2 C-r C-n C-n C-x r i d 
+
 C-r < / h C-r C-n C-n C-x r i e 
 
 # comments were saved in registers and then pasted.
@@ -74,130 +83,12 @@ C-r < / h C-r C-n C-n C-x r i e
 # comments each line
 
 8. M-< M-% < o l > Enter < o L > Enter !
+
    There were 7 occurences of "<ol>"
 
 9. C-u M-! diff -u exer1.html exer4.html
-*** diff output
---- exer1.html	2019-09-29 12:51:14.133151000 -0700
-+++ exer4.html	2019-09-30 23:56:25.991606000 -0700
-@@ -43,7 +43,7 @@
- introductions and tutorials.
- </p>
- 
--<ol>
-+<oL>
- <li>
- What shell command uses the <samp>man</samp> program
- to print all the commands that have a specific
-@@ -161,7 +161,7 @@
- <section>
- <h3>Exercise 1.1: Moving around in Emacs</h3>
- 
--<ol>
-+<oL>
- <li>Use Emacs to edit the file <samp>exer1.html</samp>.</li>
- <li>Move the cursor to just after the first occurrence of the word "HTML" (all upper-case).</li>
- <li>Now move the cursor to the start of the first later occurrence of the word "scavenger".</li>
-@@ -183,7 +183,7 @@
- <section>
- <h3>Exercise 1.2: Deleting text in Emacs</h3>
- 
--<ol>
-+<oL>
- <li>Use Emacs to edit the file <samp>exer2.html</samp>. The idea is to
- delete its HTML comments; the resulting page should display the same
- text as the original.</li>
-@@ -213,7 +213,7 @@
- <section>
- <h3>Exercise 1.3: Inserting text in Emacs</h3>
- 
--<ol>
-+<oL>
- <li>Use Emacs to edit the file <samp>exer3.html</samp>.</li>
- 
- <li>Change the first two instances of "Assignment 1" to "Assignment 42".</li>
-@@ -238,7 +238,7 @@
- that you should know, like copy and paste, search and replace, and undo.
- </p>
- 
--<ol>
-+<oL>
- <li>Execute the command "<samp>cat exer2.html exer2.diff &gt;exer4.html</samp>"
- to create a file <samp>exer4.html</samp> that contains a copy of <samp>exer2.html</samp> followed by a copy of <samp>exer2.diff</samp>.</li>
- <li>Use Emacs to edit the file <samp>exer4.html</samp>.
-@@ -279,7 +279,7 @@
- Do these tasks all within Emacs. Don't use a shell subcommand
- if you can avoid it.</p>
- 
--<ol>
-+<oL>
- <li>Create a new directory named "<samp>junk</samp>" that's right under
- your home directory.</li>
- 
-@@ -329,7 +329,7 @@
- <section>
- <h3>Exercise 1.6: Running Elisp code</h3>
- 
--<ol>
-+<oL>
- <li>Visit Emacs's <samp>*scratch*</samp> buffer.</li>
- 
- <li>In the buffer, seed the random number generator with your student
-@@ -435,3 +435,54 @@
- </body>
- </html>
- <!-- end of HTML resource -->
-+<!-- --- exer1.html	2019-09-29 12:51:14.133151000 -0700 -->
-+<!-- +++ exer2.html	2019-09-29 18:06:22.112362000 -0700 -->
-+<!-- @@ -16,7 +16,7 @@ -->
-+<!--  <section> -->
-+<!--  <h2>Laboratory: Linux and Emacs scavenger hunt</h2> -->
-+ 
-+<!-- -<\!-- diff，在UNIX系統上的一個工具程式，它可以比較兩個檔案之間的不同。通常它被用來比較同一個檔案，在不同版本間的差異。它可以產生一個擴展名為.diff或.patch的檔案，這個檔案可以被另一個工具程式patch來使用。-\-> -->
-+<!-- + -->
-+ 
-+<!--  <p>Instructions: Do this assignment on the SEASnet GNU/Linux servers -->
-+<!--  <samp>lnxsrv06</samp>, <samp>lnxsrv07</samp>, -->
-+<!-- @@ -127,7 +127,7 @@ -->
-+<!--  <section> -->
-+<!--  <h2>Homework: Learning to use Emacs</h2> -->
-+ 
-+<!-- -<\!-- DELETE-ME DELETE-ME DELETE-ME -\-> -->
-+<!-- + -->
-+ 
-+<!--  <ul> -->
-+<!--   <li>Keith Waclena, <a -->
-+<!-- @@ -366,9 +366,7 @@ -->
-+<!--  <section> -->
-+<!--  <h2>Submit</h2> -->
-+ 
-+<!-- -<\!-- You can learn more about HTML comments at -->
-+<!-- -	<https://en.wikipedia.org/wiki/HTML_comment#Comments>. -->
-+<!-- -	-\-> -->
-+<!-- + -->
-+ 
-+<!--  <p>Submit the following two files, in either plain-text or Org format -->
-+<!--  (your choice).</p> -->
-+<!-- @@ -412,11 +410,8 @@ -->
-+<!--  <samp>LC_ALL=C awk '/[^\t\f -~]/' key1.txt ans1.txt #</samp> <em>(if you submit .txt files)</em> -->
-+<!--  </pre> -->
-+ 
-+<!-- -<p>should output nothing<\!---\->.</p> -->
-+<!-- -<\!-- -->
-+<!-- -<p>Or maybe more lines, if something has gone wrong.</p> -->
-+<!-- --<->- -->
-+<!-- --\-> -->
-+<!-- +<p>should output nothing.</p> -->
-+<!-- + -->
-+<!--  </section> -->
-+ 
-+<!--  <footer> -->
-+<!-- @@ -434,4 +429,4 @@ -->
-+ 
-+<!--  </body> -->
-+<!--  </html> -->
-+<!-- -<\!-- end of HTML resource -\-> -->
-+<!-- + -->
+
+   The only differences shown in the diff file were '<ol>' tags and the comment at the end.
 
 ** 1.5
 1. C-x d C-a C-k ~ Enter + j u n k Enter
@@ -209,7 +100,9 @@ C-r < / h C-r C-n C-n C-x r i e
 4. C-x 4 b h e l l o - o u t Enter C-u M-! . / h e l l o Enter
 
 5. C-k C-y C-x o C-j C-y
+
    Output: EOF on input
+
 ** 1.6
 1. C-x b * s c r a t c h * Enter
 

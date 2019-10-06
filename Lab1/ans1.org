@@ -9,15 +9,17 @@ man whatis
 
 ** 2
 /usr/bin and /usr/local/cs/bin
+
 The shell commands used are:
 whereis mv
 whereis sh
 
 ** 3
 'ar', 'pr', and 'tr'
-ar (1): creates, modifies, and extracts from archives
-pr (1): converts text files for printing
-tr (1): translates or deletes characters
+
+ar (1): creates, modifies, and extracts from archives 
+pr (1): converts text files for printing 
+tr (1): translates or deletes characters 
 
 The shell command I ran were:
 cd /usr/bin
@@ -29,14 +31,17 @@ whatis tr
 
 ** 4
 ls -l /usr/bin/emacs; ls -l /etc/alternatives/emacs
+
 File is /usr/bin/emacs-24.3
 
 ** 5
 Running `gcc --version` outputs version 9.2.0, and running `/usr/bin/gcc --version` outputs version 4.8.5.
+
 Running 'gcc' in shell executes /usr/local/cs/bin since it is the first path in the environment variable PATH.
 
 ** 6
 u+sx makes the file executable and allows any user executing the file to run it with the same privileges as the file's owner.
+
 o-w removes write permission for users who are neither the owner nor a member of the file's group.
 
 Commands used: man chmod
@@ -97,7 +102,7 @@ Commands used: C-h f yank
 ** 15
 The keybind for dired is C-x d. Some differences I found were:
 
-(1) Emacs' dired shows hidden files and directories while ls -l does not. This can be seen in the '.' and '..' directory.
+(1) Emacs' dired shows hidden files and directories while ls -l does not. This can be seen in the '.' and '..' directory. 
     Also, the total files displayed in Emacs is 350336, while ls -l shows 350248. Running ls -al shows the missing 88 files.
 
 (2) On my shell, I see that ls -l has 'color-coded' its list, while Emacs' dired doesn't.
