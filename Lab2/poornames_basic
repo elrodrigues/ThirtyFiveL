@@ -1,0 +1,60 @@
+#!/bin/sh
+if [ $# -eq 0 ]
+then
+    echo Missing directory
+    exit 1
+elif [ $# -gt 1 ]
+then
+    echo Too many arguments
+    exit 1
+fi
+if test -d $1
+then
+    if [ $1 == "." ]
+    then
+	find . -maxdepth 1 | sed "s@^\.@@g" | tr -d "/" | sort -u | tail -n +2  > temp
+    else
+	find $1 -maxdepth 1 | sed "s@$1@@g" | tr -d "/" | sort -u | tail -n +2 > temp
+    fi
+    awk < temp '
+    	BEGIN	{
+		tPath="'$1'"
+		split(tPath, path, "")
+		l = length('tPath')
+		if(path[l] == "/")
+		{
+			tPath=""
+			for(i = 1; i < l; i++)
+			{
+				tPath = tPath path[i]
+			}
+		}
+	}
+	{
+		split($1, chars, "")
+		if(chars[1] == "[")
+		{
+			cmd="ls '$1' | grep -i \"^\\" $1 "$\" | wc -l"
+		}
+		else
+		{
+			cmd="ls '$1' | grep -i \"^" $1 "$\" | wc -l"
+		}
+		cmd2="ls '$1'/" $1 " | grep \"[^\t\f -~]\" | wc -l"
+		cmd | getline res1
+		cmd2 | getline res2
+		if (chars[1] == "-" || chars[1] == "." || length($1) > 14 || res1 > 1 || res2 > 0)
+		{
+			printf("%s/%s\n", tPath, $1)
+		}
+		close(cmd)
+		close(cmd2)
+	}
+	END {
+	    system("rm -f temp")
+	}
+    '
+else
+    echo $1 is not a valid directory or cannot be accessed. 1>&2
+    exit 2
+fi

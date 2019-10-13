@@ -1,0 +1,112 @@
+* Linux and Emacs Scavenger Hunt
+
+** 1 
+whatis
+
+Commands used:
+man man
+man whatis
+
+** 2
+/usr/bin and /usr/local/cs/bin
+
+The shell commands used are:
+whereis mv
+whereis sh
+
+** 3
+'ar', 'pr', and 'tr'
+
+ar (1): creates, modifies, and extracts from archives 
+pr (1): converts text files for printing 
+tr (1): translates or deletes characters 
+
+The shell command I ran were:
+cd /usr/bin
+cd /usr/local/cs/bin
+find -name "?r"
+whatis ar
+whatis pr
+whatis tr
+
+** 4
+ls -l /usr/bin/emacs; ls -l /etc/alternatives/emacs
+
+File is /usr/bin/emacs-24.3
+
+** 5
+Running `gcc --version` outputs version 9.2.0, and running `/usr/bin/gcc --version` outputs version 4.8.5.
+
+Running 'gcc' in shell executes /usr/local/cs/bin since it is the first path in the environment variable PATH.
+
+** 6
+u+sx makes the file executable and allows any user executing the file to run it with the same privileges as the file's owner.
+
+o-w removes write permission for users who are neither the owner nor a member of the file's group.
+
+Commands used: man chmod
+
+** 7
+/src, /bison-3.4.2, /gdb-8.3.1, /ocaml-4.09.0
+
+Commands used:
+man find
+cd /usr/local/cs
+find -type d -mtime -28
+
+** 8
+There are 303 symbolic links in /usr/bin where `find` is located.
+
+Commands used:
+which find
+find /usr/bin -type l | wc -l
+
+** 9
+The oldest regular file in /usr/lib64 is libraw1394.so.11.1.0. I used 'man find' and found the "-exec {} +" flag.
+
+Commands used:
+man find
+find /usr/lib64 -type f -mtime +2099 -exec ls -lht {} \+
+
+** 10
+The directory is /usr/share/i18n/locales
+
+Commands used:
+man locale
+cd /usr/share/i18n/locales
+
+** 11
+'downcase-dwim', 'downcase-region', and 'downcase-word'
+
+Commands used: C-h a downcase
+
+** 12
+C-M-r does an incremental search backward for a regular expression. 
+C-M-v scrolls upwards to the next window by ARG lines, or the 'next full screen' if ARG is empty. It scrolls downwards if ARG is negative
+
+Commands used:
+C-h k C-M-r
+C-h k C-M-v
+
+** 13
+C-g is bound to the command keyboard-quit. 
+It allows the user to "get rid of a partially typed command or numeric argument" and stop a running command "in a relatively safe way".
+
+Commands used: C-h K C-g
+
+** 14
+The yank command C-y reinserts/pastes the "most recent stretch of killed text."
+
+Commands used: C-h f yank
+
+** 15
+The keybind for dired is C-x d. Some differences I found were:
+
+(1) Emacs' dired shows hidden files and directories while ls -l does not. This can be seen in the '.' and '..' directory. 
+    Also, the total files displayed in Emacs is 350336, while ls -l shows 350248. Running ls -al shows the missing 88 files.
+
+(2) On my shell, I see that ls -l has 'color-coded' its list, while Emacs' dired doesn't.
+
+Commands used:
+(in emacs) C-h f dired
+(in shell) ls -l
