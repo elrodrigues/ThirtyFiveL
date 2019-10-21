@@ -1,0 +1,15 @@
+Q1) The patch shouldn't affect performance since only one
+if-statement was changed in ls.c according to the patch file.
+
+Q2) Any script in core-utils or scripts/programs written by the
+company's employees that are designed to work with/around the
+bug may break.
+
+Q3) Running the script on /dev/null leads to the IndexError being raised.
+
+Q4) Got a SyntaxError at `except IOError as (errno, strerror):'
+
+Q5) If shuf.py is invoked with Python 2 with the `-r' flag,
+then it throws an AttributeError since the class function
+copy() for lists doesn't exist in Python 2. The rest works
+fine.

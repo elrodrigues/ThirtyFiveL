@@ -1,0 +1,65 @@
+1) tr -c 'A-Za-z' '[\n*]'
+This command converts any character that
+is not a the Englist alphabet into newlines
+
+2) tr -cs 'A-Za-z' '[\n*]'
+This command does the above but removes
+repeated sequences of newlines leaving one
+
+3) tr -cs 'A-Za-z' '[\n*]' | sort
+This command does the above but sorts
+the words in ASCII order
+
+4) tr -cs 'A-Za-z' '[\n*]' | sort -u
+This command does the above but sorts the
+words uniquely in ASCII order
+
+5) tr -cs 'A-Za-z' '[\n*]' | sort -u | comm - words
+This command does the above and creates
+three columns of words.
+
+6) tr -cs 'A-Za-z' '[\n*]' | sort -u | comm -23 - words # ENGLISHCHECKER
+This command does the above but only
+outputs the words that are not in the `words` file.
+
+The script to build the Hawaiian dictionary is below:
+sed -r 's/<u>|<\/u>|\?//g' | tr '[A-Z]' '[a-z]' | \
+tr '\`' "'" | grep -e "<td[^>]*>" | \
+sed -r 's/^\s*(<.*)$/\1/g' | sed -r 's/<[^>]*>//g' | \
+sed '/^$/d' | sed '0~2d' | sed '1,2d' | \
+sed 's/\s/\n/g' | sed '/^$/d'
+
+This first removes <u>, </u> and ? tags. Then, it converts
+all letters to lower-case and graves (`) to apostrophes (').
+It then looks for the words using the <td> tag. Then, it gets
+rid of extra spacing at the start and removes all <td> and </td>
+tags. Finally, it gets rid of empty lines and deletes alternating
+lines leaving us with the Hawaiian words.
+
+HAWAIIANCHECKER commands:
+1) tr -cs "PKMNWLHAEIOUpkmnwlhaeiou'" '[\n*]' < assign2.html| \
+tr [:upper:] [:lower:] | sort -u | comm -23 - hwords | wc -l
+Distinct misspelled words using HAWAIIANCHECKER is 232 words.
+
+2) tr -cs 'A-Za-z' '[\n*]' < assign2.html | sort -u | \
+comm -23 - words | wc -l
+Distinct misspelled words using ENGLISHCHECKER is 94 words
+
+3) tr -cs 'A-Za-z' '[\n*]' < assign2.html | sort -u | \
+comm -23 - words | tr -cs "PKMNWLHAEIOUpkmnwlhaeiou'" '[\n*]'| \
+tr [:upper:] [:lower:] | sort -u | comm -12 - hwords | wc -l
+Number of distinct words that ENGLISHCHECKER reports
+as misspelled but HAWAIIANCHECKER does not: 10
+lau, wiki are two examples
+
+4) tr -cs "PKMNWLHAEIOUpkmnwlhaeiou'" '[\n*]' < assign2.html| \
+tr [:upper:] [:lower:] | sort -u | comm -23 - hwords | \
+tr -cs 'A-Za-z' '[\n*]' | sort -u | comm -12 - words | wc -l
+Number of distinct words that HAWAIIANCHECKER reports
+as misspelled but ENGLISHCHECKER does not: 123 words
+alone, all are two examplesca
+
+I have two bugs in poornames. One is when the name starts
+with a character that must be escaped in sed. The other
+is when the directory cannot be opened. The script continues
+to work but it cannot (for now) redirect this error to stderr.

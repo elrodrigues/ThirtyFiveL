@@ -1,28 +1,89 @@
 #!/bin/sh
-if [ $# -eq 0 ]
-then
-    echo Missing directory
-    exit 1
-elif [ $# -eq 1  ]
-then
-    # echo Too many arguments
-    # exit 1
-    if test -d $1
+function findBad ()
+{
+    if [ $# -eq 2  ]
+    then
+	if [ $2 == "p" ]
+	then
+	    echo $1 | tr " " "\n" | awk '
+  	{
+		tPath=$1
+  		split(tPath, path, "")
+  		l = length('tPath')
+  		if(l > 1 && path[l-1] == "/" && path[l] == "/")
+		{
+  			tPath=""
+			for(i = 1; i < l - 1; i++)
+  			{
+  				tPath = tPath path[i]
+  			}
+		}
+		else if(path[l] == "/")
+  		{
+  			tPath=""
+			for(i = 1; i < l; i++)
+  			{
+  				tPath = tPath path[i]
+  			}
+  		}
+		if($1 == ".")
+		{
+fet="find . -maxdepth 1|sed \"s@^\\.@@g\"|tr -d \"/\"|sort -u|tail -n +2"
+		}
+		else 
+		{
+fet="find " $1 " -maxdepth 1|sed \"s@" $1 "@@g\"|tr -d \"/\"|sort -u|tail -n +2"
+		}
+		while ( ( fet | getline result ) > 0 ) {
+			split(result, chars, "")
+  			if(chars[1] == "[")
+			{
+				cmd="ls " $1 "/ | grep -i \"^\\" result "$\" | wc -l"
+  			}
+			else
+			{
+  				cmd="ls " $1 "/ | grep -i \"^" result "$\" | wc -l"
+  			}
+			cmd2="echo \"" result "\" | grep -e \"[^A-Za-z0-9_./\\-]\" | wc -l"
+			cmd | getline res1
+			cmd2 | getline res2
+if(chars[1]=="-" || chars[1]=="." || length(result)>14 || res1>1 || res2>0)
+			{
+				printf("%s/%s\n", tPath, result)
+  			}
+			close(cmd)
+		  	close(cmd2)      
+			
+	       	}
+		close(fet)		
+		
+  	}
+	'
+	else
+	    echo Bad arguments
+	fi
+    elif test -d $1
     then
 	if [ $1 == "." ]
 	then
-  	    out=$(find . -maxdepth 1 | sed "s@^\.@@g" | tr -d "/" | sort -u | tail -n +2)
-	    # find . -maxdepth 1 | sed "s@^\.@@g" | tr -d "/" | sort -u | tail -n +2 > temp
+out=$(find . -maxdepth 1 | sed "s@^\.@@g" | tr -d "/" | sort -u | tail -n +2)
 	else
-  	    out=$(find $1 -maxdepth 1 | sed "s@$1@@g" | tr -d "/" | sort -u | tail -n +2)
-	    # find $1 -maxdepth 1 | sed "s@$1@@g" | tr -d "/" | sort -u | tail -n +2 > temp
+out=$(find $1/ -maxdepth 1 | sed "s@$1@@g" | tr -d "/" | sort -u | tail -n +2)
 	fi
 	echo $out | tr " " "\n" | awk '
   	    BEGIN	{
   	    	tPath="'$1'"
   		split(tPath, path, "")
   		l = length('tPath')
-  		if(path[l] == "/")
+  		if(l > 1 && path[l-1] == "/")
+		{
+			tPath=""
+  			for(i = 1; i < l - 1; i++)
+  			{
+  				tPath = tPath path[i]
+  			}
+		}
+		else if(path[l] == "/")
   		{
   			tPath=""
   			for(i = 1; i < l; i++)
@@ -44,54 +105,47 @@ then
   		cmd2="echo " $1 " | grep -e \"[^A-Za-z0-9_./\\-]\" | wc -l"
   		cmd | getline res1
   		cmd2 | getline res2
-  		if (chars[1] == "-" || chars[1] == "." || length($1) > 14 || res1 > 1 || res2 > 0)
+if (chars[1]=="-" || chars[1]=="." || length($1)>14 || res1>1 || res2>0)
   		{
   			printf("%s/%s\n", tPath, $1)
   		}
   		close(cmd)
   		close(cmd2)
+		
   	}
   '
     elif [ $1 == "-r" ]
     then
 	dir=$( pwd )
 	dir=$( find $dir -type d )
-	scriptpath="$( cd "$( dirname "{BASH_SOURCE[0]}" )" ; pwd -P )"
+	# scriptpath="$( cd "$( dirname "{BASH_SOURCE[0]}" )" ; pwd -P )"
 	# echo $dir
-        echo $dir | tr " " "\n" | awk '
-        {
-	 	res=""
-		cmd="'$scriptpath'/poornames " $1
-	       	while ( ( cmd | getline result ) > 0 ) {
-		      print result
-	   	}
-		close(cmd)
-       }
-    '
+        findBad $dir "p"
     else
 	echo $1 is not a valid directory or cannot be accessed. 1>&2
 	exit 2
     fi
+}
+if [ $# -eq 0 ]
+then
+    echo Missing directory
+    exit 1
+elif [ $# -eq 1  ]
+then
+    # echo Too many arguments
+    # exit 1
+    findBad $1
 elif [ $# -eq 2 -a $1 = -r ]
 then
     if test -d $2
     then
-	dir=$( find $2/ -type d )
-	scriptpath="$( cd "$( dirname "{BASH_SOURCE[0]}" )" ; pwd -P )"
-	#echo $scriptpath
-	
-	#echo $dir
-	#echo $dir | tr " " "\n" >&1
-	echo $dir | tr " " "\n" | awk '
-	{
-		res=""
-		cmd="'$scriptpath'/poornames " $1
-	       	while ( ( cmd | getline result ) > 0 ) {
-		      print result
-	   	}
-		close(cmd)
-	}
-    '
+	if [ $2 == ~ ]
+	then
+	    dir=$( find $2/ -type d )
+	else
+	    dir=$( find $2 -type d )
+	fi
+	findBad "$dir" "p"
     else
 	echo $2 is not a valid directory or cannot be accessed. 1>&2
 	exit 2

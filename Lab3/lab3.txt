@@ -1,0 +1,30 @@
+/usr/bin/ls has this issue. The coreutils version is coreutils 8.22
+
+Got the warning: this key is not certified with a trusted signature;
+There is no indication that the signature belongs to the owner.
+This is probably due to the web of trust where the signed key was
+put in the `unknown' trust group. This is a useful feature of RSA
+
+Running `make install' was not successful since it tried installing
+coreutils in /usr/local/bin to which we don't have access to.
+
+Running the executable `ls' in coreutils-8.29/src/ produces
+the bug from the message board when we run ls -aA.
+
+Commands I used to patch:
+patch --dry-run -ruN -p1 -d coreutils-8.29 < 0001-ls-A-now-overrides-a.patch
+patch -ruN -p1 -d coreutils-8.29 < 0001-ls-A-now-overrides-a.patch
+
+File `NEWS` failed to patch. My guess is that the patcher
+worked in two directories `a' and `b' as seen in the diff
+output from the patch file.
+
+Commands I ran to remake coreutils:
+autoreconf -fi
+make
+Running `make' recompiles all the .c files for executables in src/ and tests/.
+
+`ls' is patched now: `A' flag now overrides `a' flag in `ls -aA'.
+
+
+
