@@ -1,0 +1,8 @@
+Encountered an error during `make' where two functions both
+named `futimens' had conflicting types. This is where the
+renaming patch would come in.
+
+patch -ruN -p0 -d coreutils-with-bug < coreutils.diff
+
+2054 issue
+

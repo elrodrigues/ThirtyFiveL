@@ -1,4 +1,4 @@
-#!/usr/local/cs/bin/python3
+#!/usr/bin/env python3
 import random, sys
 import argparse
 
@@ -128,7 +128,6 @@ def main():
         parser.add_argument("-r", "--repeat",
                             help="output lines can be repeated",
                             action="store_true", dest="REP")
-        
         args = parser.parse_args()
         fl = ""
         ifl = ""
