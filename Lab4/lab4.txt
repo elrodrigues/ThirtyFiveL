@@ -1,8 +1,40 @@
+==NOTES==
 Encountered an error during `make' where two functions both
 named `futimens' had conflicting types. This is where the
 renaming patch would come in.
 
+Used this command to patch coreutils:
 patch -ruN -p0 -d coreutils-with-bug < coreutils.diff
 
-2054 issue
+In the temporary folder, wwi-armistics-cs35l is shown to have
+modified date of 1918 when running the SEASnet and bugged
+version of ls. However, attempting the same thing in the home
+directory outputs a modified date of 2054.
 
+This is probably due to the difference in way time is stored
+in local temporary folders as opposed to the home directory.
+Running SEASnet's ls technically sorts the output correctly,
+but incorrectly judges wwi-armistice-cs35l to be from 2054.
+
+==PATCHING==
+I first ran into issues patching coreutils since files like
+utimens.c~ do not exist from the untar'd version. I then
+learnt to use the flag `-p0' to deal with this.
+
+I used gdb to debug ls.c and found that its main function
+made calls to `compare_mtime()' when the `-t' flag was used.
+With iterative steps and breaks, I finally found calls to
+`timespec_cmp()' in `timespec.h' where the issue seemed
+to originate.
+
+Using the test example from the spec, two calls are made
+every run to timespec_cmp(), and in the second call, we
+can find an overflow of the variable `diff' to a negative
+number since wwi-armistice-cs35l is so far back in time.
+
+I resolved this issue by changing timespec_cmp() to a
+simple comparison to avoid overflow and underflow issues.
+
+I generated my patch using the command:
+diff -u timespec.h~ timespec.h > lab4.diff
+Where `timespec.h~' is the original header file.
