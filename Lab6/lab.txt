@@ -1,0 +1,184 @@
+== LAB ==
+** 1
+gcc -lgmp simpgmp.c -o simpgmp
+
+** 2
+./simpgmp 24 # 16777216
+./simpgmp 16777216 > exp.out
+wc -m exp.out # 5050447
+head -c 4 exp.out # 1818
+tail -c 5 exp.out # 7536
+
+** 3
+I ran `ldd' on simpgmp. The output was:
+linux-vdso.so.1 =>  (0x00007ffc5977b000)
+libgmp.so.10 => /lib64/libgmp.so.10 (0x00007fe81e937000)
+libc.so.6 => /lib64/libc.so.6 (0x00007fe81e569000)
+/lib64/ld-linux-x86-64.so.2 (0x00007fe81ebaf000)
+
+so it's using linux-vdso.so.1, libgmp.so.10, libc.so.6 and
+ld-linux-x86-64.so.2
+
+** 4
+I ran `strace' and found that the system command open()
+is used to open the .so.X file to read the library.
+
+** 5
+These were my commands from running the spec's commands:
+akonaditray
+cpupower
+expand
+grub2-render-label
+javaws
+lndir
+nl-link-enslave
+pbmclean
+pnmnoraw
+rcsfreeze
+solid-hardware
+uuidgen
+
+** 6
+Some executables were not dynamic executables:
+`rcsfreeze', `javaws', `pnmnoraw'
+This could be because they were compiled with
+through static linking instead of dynamic linking.
+
+I ran the command ls -l $(cat $LP/../commands.out)
+and found some interesting things.
+
+First, my explanation seems to be true for
+'rcsfreeze' but not for javaws and pnmnoraw
+since they are symbolic links.
+
+# Note for self, readlink was used #
+javaws finally leads to:
+/usr/bin/javaws.itweb
+pnmnoraw finally leads to:
+/usr/bin/pnmtoplainpnm
+
+Running ldd on both executables revealed
+that they were not dynamic executables.
+
+** 7
+The commands used to format list:
+cat * | sed 's@=[^)]*)@@g' | sed 's@([^)]*)@@g' \
+| sed 's@/[^/]*/@@g' | tr -d '\t' \
+| sort -u >> ../lab6.txt
+
+This is a list of all the dynamic libraries used
+in the 8 dynamic executables:
+ld-linux-x86-64.so.2 
+libICE.so.6 
+libQtCore.so.4 
+libQtDBus.so.4 
+libQtGui.so.4 
+libQtNetwork.so.4 
+libQtSql.so.4 
+libQtSvg.so.4 
+libQtXml.so.4 
+libSM.so.6 
+libX11.so.6 
+libXau.so.6 
+libXcursor.so.1 
+libXext.so.6 
+libXfixes.so.3 
+libXft.so.2 
+libXi.so.6 
+libXinerama.so.1 
+libXpm.so.4 
+libXrandr.so.2 
+libXrender.so.1 
+libXtst.so.6 
+libacl.so.1 
+libakonadi-kde.so.4 
+libakonadiprotocolinternals.so.1 
+libattica.so.0.4 
+libattr.so.1 
+libbz2.so.1 
+libc.so.6 
+libcap.so.2 
+libcom_err.so.2 
+libcpupower.so.0 
+libcrypto.so.10 
+libdbus-1.so.3 
+libdbusmenu-qt.so.2 
+libdevmapper.so.1.02 
+libdl.so.2 
+libdw.so.1 
+libelf.so.1 
+libexpat.so.1 
+libfam.so.0 
+libffi.so.6 
+libfontconfig.so.1 
+libfreetype.so.6 
+libgcc_s.so.1 
+libgcrypt.so.11 
+libglib-2.0.so.0 
+libgobject-2.0.so.0 
+libgpg-error.so.0 
+libgssapi_krb5.so.2 
+libgthread-2.0.so.0 
+libk5crypto.so.3 
+libkdecore.so.5 
+libkdeui.so.5 
+libkeyutils.so.1 
+libkio.so.5 
+libkrb5.so.3 
+libkrb5support.so.0 
+liblz4.so.1 
+liblzma.so.5 
+libm.so.6 
+libnepomuk.so.4 
+libnepomukquery.so.4 
+libnepomukutils.so.4 
+libnetpbm.so.11 
+libnl-3.so.200 
+libnl-cli-3.so.200 
+libnl-genl-3.so.200 
+libnl-idiag-3.so.200 
+libnl-nf-3.so.200 
+libnl-route-3.so.200 
+libpci.so.3 
+libpcre.so.1 
+libpng15.so.15 
+libpthread.so.0 
+libqca.so.2 
+libresolv.so.2 
+librt.so.1 
+libselinux.so.1 
+libsepol.so.1 
+libsolid.so.4 
+libsoprano.so.4 
+libsopranoclient.so.1 
+libssl.so.10 
+libstdc++.so.6 
+libstreamanalyzer.so.0 
+libstreams.so.0 
+libsystemd.so.0 
+libudev.so.1 
+libuuid.so.1 
+libxcb.so.1 
+libxml2.so.2 
+libz.so.1 
+linux-vdso.so.1
+
+== HW ==
+I ran tar -xvf dlskeleton.tgz to extract the tar.
+
+I tried experimenting with different header
+inclusions before settling with the current
+one.
+
+I wasn't sure if I could modify the headers to
+reduce the number of library inclusions by
+including it directly in the header files.
+I settled on not modifying the header files.
+
+I found the __attribute__((__constructor__))
+and the destructor counterpart really interesting
+since we now have a notion of performing actions
+before and after a program.
+
+I also found that `dlclose()' doesn't like
+non-NULL pointers being passed to it.

@@ -1,0 +1,112 @@
+== LAB ==
+I first explored ways of quickly checking for
+duplicates and length in one pass. I decided
+to use a char array of all possible values of
+char to search through the arguments linearly.
+A possible downside to this is the possibility
+of signed char being an issue when traversing
+the array.
+
+I then started parsing the bytes using getchar()
+for tr2b and read() for tr2u. Turns out read()
+is not very user friendly as we'll see later in
+sfrobu. I also had to take care of where read()
+and write() read and write to respectively.
+
+On one occasion, I had read() read from stdout
+(which is bonkers). After fixing bugs and memory
+leaks, I ran `strace' on tr2b and tr2u with
+a 5,000,000 byte file (bigfile.txt).
+
+tr2b's strace showed that it read about 8192
+bytes at a time, thus reducing the overhead
+of reading bytes from stdin (buffered input).
+On the other hand, tr2u does a system call
+for each byte, increasing the overhead cost
+dramatically. It is clear that tr2b is faster.
+
+tr2b
+real    0m0.185s
+user    0m0.131s
+sys     0m0.010s
+
+tr2u
+real    0m12.086s
+user    0m3.305s
+sys     0m8.734s
+
+== HW ==
+The first issue I ran into was a lot of segfaults
+and heap-overflows when using read(). It turns out
+that I had passed a bad `num of bytes' parameter
+to read(). I tried reading as much data as I could
+in one go to mimic the perfomance improvement seen
+in tr2b. However, with files like /proc/self/status
+or piping printf output, they have to be read byte
+by byte since fstat gives 0 file size (so we don't
+have a lookahead). I first tried using fseek() but
+this was a bad idea. I then switched to fstat().
+
+Implementing the flag was not bad since all it takes
+is one global variable and some checks to ensure
+that char is within the defined bounds for toupper.
+My sfrobu.c is certainly more robust than sfrob.c right
+now since I implemented more checks and now have a
+better understanding of functions like ferror() and
+S_ISREG().
+
+On files of 1 million bytes, the time comparison is:
+= File 1 =
+sfrob
+real    0m0.074s
+user    0m0.023s
+sys     0m0.006s
+
+sfrobu
+real    0m0.033s
+user    0m0.012s
+sys     0m0.014s
+
+= File 2 =
+sfrob
+real    0m0.035s
+user    0m0.024s
+sys     0m0.005s
+
+sfrobu
+real    0m0.031s
+user    0m0.012s
+sys     0m0.013s
+
+= File 3 (sfrobu before sfrob) =
+sfrob
+real    0m0.035s
+user    0m0.026s
+sys     0m0.003s
+
+sfrobu
+real    0m0.059s
+user    0m0.016s
+sys     0m0.012s
+
+What's surprising is that sfrobu has higher system time
+but is still faster that sfrob at times. Also, caching
+affects the speed of execution which I've seen when
+executing sfrobu before sfrob. sfrobu spreads the load
+between user and system, but performs worse than sfrob
+from what I've seen so far.
+
+This is probably due to my writes being unbuffered
+in sfrobu.c. //Making those buffered would reduce the
+overhead, and sfrobu should then perform better than
+sfrob.// This has been fixed now, although performance
+hasn't improved much. Maybe I have to add error checks
+to sfrob.c to ensure a fair comparison?
+
+On testing with files of size 10, 10000, 1 million and
+10 million bytes, I found that the worst bound for
+sfrobu.c is O(n).
+
+Also, when using malloc and realloc, the system calls
+mremap() and brk() are used to change memory maps.
+I found this using strace on sfrobu.

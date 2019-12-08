@@ -1,0 +1,117 @@
+(1) git clone ~eggert/src/gnu/diffutils/
+
+(2) git log > ../lab/git-log.txt
+
+(3) git tag > ../lab/git-tags.txt
+
+(4)
+grep -n "maint: quote"
+(within emacs of git-log.txt) M-g M-g <line-number>
+# I then copied the hash seen below:
+git show 62ca21c8c1a5aa3488589dcb191a4ef04ae9ed4f \
+    > ../lab/quote-patch.txt
+
+(5)
+git checkout v3.0 # detached HEAD mode
+
+(6)
+patch -rRej -uN -p1 -d ./ < ../lab/quote-patch.txt
+* HACKING is missing
+* Some hunks failed in README, README-hacking, cfg.mk, diagmeet.note
+* doc/diffutils.texi missing
+* man/help2man missing
+* Some hunks failed in src/diff.c, src/diff3.c
+
+(7)
+== git status ==
+HEAD detached at v3.0
+Changes not staged for commit:
+	modified:   NEWS
+	modified:   README
+	modified:   TODO
+	modified:   doc/diagmeet.note
+	modified:   ms/config.bat
+	modified:   ms/config.site
+	modified:   po/en.po
+	modified:   src/analyze.c
+	modified:   src/cmp.c
+	modified:   src/context.c
+	modified:   src/diff.c
+	modified:   src/diff.h
+	modified:   src/diff3.c
+	modified:   src/dir.c
+	modified:   src/ifdef.c
+	modified:   src/io.c
+	modified:   src/sdiff.c
+	modified:   src/side.c
+	modified:   src/system.h
+	modified:   src/util.c
+	modified:   tests/help-version
+
+Untracked files:
+	NEWS.orig
+	README-hacking.orig
+	README.orig
+	Rej
+	cfg.mk.orig
+	ms/config.site.orig
+	src/cmp.c.orig
+	src/context.c.orig
+	src/diff.c.orig
+	src/diff.h.orig
+	src/diff3.c.orig
+	src/dir.c.orig
+	src/sdiff.c.orig
+	src/system.h.orig
+	src/util.c.orig
+	tests/help-version.orig
+
+(8) (9)
+I used vc-revert (C-x v u) to revert all changes
+to all non .c files.
+
+I used vc-diff and used C-c C-c while in that
+buffer to examing source code, and C-c C-a to
+undo changes from a specific hunk.
+
+Here are the .c files I modified.
+# denotes that all changes were undone
+* denotes that some (not all) were undone
+src/
+	analyze.c (#)
+	cmp.c (*)
+	context.c (#)
+	diff.c (*)
+	diff3.c (*)
+	dir.c (*)
+	ifdef.c (#)
+	io.c (#)
+	sdiff.c (*)
+	side.c (#)
+	util.c (*)
+
+(10) I manually looked at Rej and added
+the necessary changes. Only diff3 and diff
+had to be changed I think.
+
+(11)
+git clean -n # dry-run
+git clean -f # actual
+
+(12)
+326 lines in quote-3.0-patch.txt
+
+(13) I worked in lnxsrv09
+./bootstrap
+patch -rRej -uN -p0 -d ./ < ../lab/diffutils-gets.diff
+./configure
+make
+make check # I encountered errors with src/sh I think.
+# But diff works fine.
+
+(14) (15)
+Yes, there are differences between the two
+diff files, but they are innocuous since
+the actual changes to the source code in
+both files are identical - which is needed
+to patch.

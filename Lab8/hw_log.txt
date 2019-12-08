@@ -1,0 +1,6 @@
+(sudo) gpg2 --gen-key
+gpg2 --armor --output hw-pubkey.asc -export 'Elvis Rodrigues'
+gpg2 --armor --output eeprom.sig --detach-sign eeprom
+
+gpg2 -K # lists all keys in keyrings
+gpg2 --default-key <yourKeyID> <rest of command> # to use a different key.

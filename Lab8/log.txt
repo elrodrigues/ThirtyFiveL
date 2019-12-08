@@ -1,0 +1,61 @@
+I used a computer running Ubuntu as I had
+compatibility issues with Beaglebone and my
+Windows.
+
+I saw that Ubuntu had XOrg is running in
+the background, but I decided to install
+a backup X-server application.
+
+I ran START.html and installed any drivers/
+software needed. Then I ssh'd into my Beagle:
+
+$ ssh -X root@192.168.7.2
+
+I then configured my Beagle to connect to a
+mobile hotspot my partner setup by running:
+$ connmanctl
+connmanctl> enable wifi
+connmanctl> scan wifi
+connmanctl> services
+connmanctl> agent on
+connmanctl> connect <hotspot-string>
+passphrase: ********
+connmanctl> quit
+
+We then grabbed each others' local ip
+address by running $ifconfig and looking
+for `inet address'
+
+I created an account for my partner by
+executing:
+$ sudo useradd -d /home/max -m max
+$ sudo passwd max
+
+I then entered Max's home directory and
+created the `.ssh' profile:
+$ cd /home/max
+$ sudo mkdir .ssh
+$ sudo chown -R max .ssh
+$ sudo chmod 700 .ssh
+
+Finally I entered my partner's Beaglebone
+by running:
+$ ssh -X elvis@<max_local_ip>
+<entered my password here>
+
+My partner had gedit installed, so I just
+ran $gedit, and the gedit window opened.
+
+The second half involved using key pairs
+to ssh into a Beaglebone instead of passwords.
+I ran:
+$ ssh-keygen
+$ ssh-copy-id -i elvis@<max_local_ip> # adds public key to server
+$ eval $(ssh-agent -s) # initiates ssh-agent.
+$ ssh-add # gives private key to ssh-agent instance
+$ ssh -X elvis@<max_local_ip>
+
+This time, no password was needed to ssh into
+my partner's server. I was able to run gedit
+again here.
+

@@ -1,0 +1,35 @@
+== Question 1 ==
+There are three scenarios that we are considering:
+1. The team is observing all the bytes going across
+the network. In such a case, files and their signatures
+can be intercepted but the network is still secure as
+the private key is never sent over a network.
+
+2. The team tapped my keyboard in addition to scenario 1.
+Here, the team will still not know the private key
+(though they may know the password needed to sign
+documents). Thus, the network is still secure.
+
+3. The team temporarily has physical control of a
+bootable USB in addition to scenario 2. Then, the
+network is no longer secure as the team could copy
+secring stored in the .gnppg folder and would
+know the password needed to decrypt secring.
+
+== Question 2 ==
+gpg2 --verify cannot itself verify that I personally
+created the file since anyone could generate a keypair
+with my name and sign the file, thus attaching my name
+to this new signature.
+
+There are two ways to tackle this.
+(1) One is to get the sender's keyID through another
+channel and then (if the keys are hosted on a keyserver)
+fetching the keys from the keyserver by running
+gpg --recv-keys keyID.
+Finally, the receiver could sign the downloaded public
+key thus trusting the keypair and all its signatures.
+
+(2) Another way is to use OpenPGP's Web of Trust model
+that ranks keys on different tiers of trust: from
+not trustworthy to ultimately trusted.

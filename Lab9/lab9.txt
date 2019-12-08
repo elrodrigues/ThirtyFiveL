@@ -1,0 +1,61 @@
+1.
+333.35 MiB of storage is used for all of the git repository,
+but this is the size of the repo stored in a pack.
+
+The actual total storage of the git directory is 509 MB
+
+The 5 largest files are:
+/.git/objects/pack/pack-24e56b1749b9320c560213d9045fa6cee42b4174.pack
+/.git/objects/pack/pack-24e56b1749b9320c560213d9045fa6cee42b4174.idx
+/.git/objects/info/commit-graph
+/.git/gitk.cache
+/test/manual/BidiCharacterTest.txt
+
+2.
+Number of remote branches: 177
+Number of local branches: 176
+
+3.
+The origin address is:
+https://git.savannah.gnu.org/git/emacs.git
+
+4.
+master
+scratch/joaot/make-completion-at-point-function
+feature/windows-with-utils
+scratch/completion-api
+scratch/a-modest-completion-redesign-proposal
+scratch/fido-mode
+feature/gnus-select2
+feature/extend_face_id
+scratch/jit-lock-antiblink-cleaned-up
+emacs-26
+
+5.
+Number of commits in master branch: 139583
+
+6.
+Number of unique commits: 143909
+Percentage of commits in master ~ 97%
+
+7.
+The 10 people who authored the most master branch commits are:
+    Eli Zaretskii
+    Glenn Morris
+    Paul Eggert
+    Lars Ingebrigtsen
+    Stefan Monnier
+    Michael Albinus
+    Dmitry Gutov
+    Noam Postavsky
+    Alan Mackenzie
+    Juri Linkov
+
+8.
+      977cd -- ...... -- 0c06b -- .................... ---- abcb2 ------- 98ac3
+     /                    /                                 /          /
+4ea37                   ..--- ... --- 82073                /          /
+     \                 /                   \              /          /
+      \               /                    00e4e         /          /
+       \             /                          \       /          /
+        625ce -- 5490c -- ................ -- .. -- 49cd5 -- ... --

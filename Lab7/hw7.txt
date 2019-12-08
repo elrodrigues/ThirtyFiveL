@@ -1,0 +1,50 @@
+(2) git checkout v3.0 -b quote
+
+(3) patch -rRej -uN -p1 -d . < ../lab/quote-3.0-patch.txt
+
+(4) (5)
+C-x 4 a to open a ChangeLog buffer. I adapted my log from
+the 'v3.0' commit message from git log.
+
+My ChangeLog was:
+   * src/cmp.c, src/diff.c, src/diff3.c, src/dir.c:
+   * src/sdiff.c, src/util.c:
+   Quote 'like this' in output and hard-coded strings
+
+(6)
+I first removed untracked files. Then:
+git add *
+git commit
+Then I entered my ChangeLog in
+
+(7) (while in quote) git format-patch master
+This generated a file like 0001-XXXXX.
+I renamed it to formatted-patch.txt.
+
+(8) git checkout master
+git checkout v3.0 -b partner
+git am partner-formatted-patch.txt
+
+(9)
+./bootstrap
+patch -rRej -uN -p0 -d . < diffutils-gets.diff
+./configure
+make
+make check # this throws some errors with src/sh
+# I ran into a similar issue with my patch.
+
+(10)
+This is what I found as the latest merge
+not newer than 2015-01-25:
+
+    Merge branch 'master' into xwidget
+    SHA ID: d522fd8ca73e668bfafd0419bc5f71f2751cca24
+    
+The top 3 windows describe the commits with branches and merges,
+authors, and date of commit in reverse chronological order
+
+The bottom left section shows the commit message with
+SHA ID's of parent and child commits, along with all
+changes in that commit.
+The window to the right are bookmarks to files in the
+difference output window.
