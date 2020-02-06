@@ -38,6 +38,8 @@ $ sudo mkdir .ssh
 $ sudo chown -R max .ssh
 $ sudo chmod 700 .ssh
 
+UPDATE: $ sudo chsh -s /bin/bash <username>
+
 Finally I entered my partner's Beaglebone
 by running:
 $ ssh -X elvis@<max_local_ip>
